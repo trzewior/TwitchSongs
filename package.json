@@ -1,0 +1,23 @@
+{
+  "name": "twitchsong",
+  "version": "1.0.0",
+  "description": "twitch chat api crawler",
+  "main": "index.js",
+  "dependencies": {
+    "tmi.js": "^1.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trzewior/TwitchSongs.git"
+  },
+  "author": "trzewior",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trzewior/TwitchSongs/issues"
+  },
+  "homepage": "https://github.com/trzewior/TwitchSongs#readme"
+}
