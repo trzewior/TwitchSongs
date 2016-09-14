@@ -5,8 +5,7 @@ var requestify = require('requestify');
 
 function chat(configPath) {
     var self = this;
-
-    self.songQueue = [];
+    var songQueue = [];
 
     self.config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     self.options = {
@@ -31,28 +30,29 @@ function chat(configPath) {
             return;
 
         var youtubeUrl = message.split(' ')[1];
-
         var videoId = youtubeUrl.match(/^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/)[1];
-
-        var youtubeOptions = {
-            host: 'www.googleapis.com',
-            path: '/youtube/v3/videos?id=' + videoId + '&key=' + self.config.youtubeApiKey + '&part=contentDetails,snippet',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
 
         requestify.get('https://www.googleapis.com/youtube/v3/videos?id=' + videoId + '&key=' + self.config.youtubeApiKey + '&part=contentDetails,snippet').then(function (response) {
             var body = response.getBody();
-
             var item = body.items[0];
             var name = item.snippet.title;
-            var duration = moment.duration(item.contentDetails.duration).asMilliseconds();
+            var duration = moment.duration(item.contentDetails.duration).asMilliseconds() / 1000;
+
+            var video = {
+                url: youtubeUrl,
+                videoId: videoId,
+                duration: duration,
+                name: name,
+                username: userstate['display-name'],
+                history: false
+            };
+            songQueue.push(video);
         });
     })
 
-
+    self.getQueue = function() {
+        return songQueue;
+    }
 }
 
 // export the class
